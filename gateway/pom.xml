@@ -12,4 +12,11 @@
     <artifactId>gateway</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

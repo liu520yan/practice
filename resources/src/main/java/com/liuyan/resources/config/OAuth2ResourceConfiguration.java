@@ -23,7 +23,8 @@ public class OAuth2ResourceConfiguration extends ResourceServerConfigurerAdapter
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/user").authenticated()
+                .antMatchers(HttpMethod.GET, "/on").permitAll() //所有人都可以访问
                 .antMatchers(HttpMethod.GET, "/users").hasAuthority("READ")
                 .antMatchers(HttpMethod.POST, "/users").hasAuthority("WRITE");
     }
