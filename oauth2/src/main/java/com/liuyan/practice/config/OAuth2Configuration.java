@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -35,6 +36,9 @@ import java.util.List;
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
+    @Value("${accessTokenValiditySeconds}")
+    int accessTokenValiditySeconds;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
@@ -43,7 +47,8 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
                 .scopes("openid")
                 .autoApprove(true)
                 .authorities("READ", "WRITE")
-                .authorizedGrantTypes("implicit", "refresh_token", "password", "authorization_code", "client_credentials");
+                .authorizedGrantTypes("implicit", "refresh_token", "password", "authorization_code", "client_credentials")
+                .accessTokenValiditySeconds(accessTokenValiditySeconds);
     }
 
     @Override

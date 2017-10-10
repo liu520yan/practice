@@ -1,3 +1,5 @@
 server:
   port: 9999
 debug: true
+#jwt 过期时间 单位： 秒
+accessTokenValiditySeconds: 6000
