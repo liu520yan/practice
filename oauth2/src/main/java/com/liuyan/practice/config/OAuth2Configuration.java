@@ -48,6 +48,9 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+        //todo userDetailService
+
         List<UserDetails> userDetailsList = new ArrayList<>();
         userDetailsList.add(new User("user", "user", Lists.newArrayList(new SimpleGrantedAuthority("READ"))));
         userDetailsList.add(new User("admin", "admin", Lists.newArrayList(new SimpleGrantedAuthority("READ"), new SimpleGrantedAuthority("WRITE"))));
@@ -55,7 +58,7 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
         endpoints.tokenStore(tokenStore())
                 .tokenEnhancer(jwtTokenEnhancer())
                 .authenticationManager(authenticationManager)
-                // 需要指定userDetailsService否则在请求refresh_token接口时报userDetailsService is required
+                // todo  需要指定userDetailsService否则在请求refresh_token接口时报userDetailsService is required
                 .userDetailsService(new InMemoryUserDetailsManager(userDetailsList));
     }
 
