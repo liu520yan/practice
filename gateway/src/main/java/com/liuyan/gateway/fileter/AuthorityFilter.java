@@ -1,18 +1,37 @@
 package com.liuyan.gateway.fileter;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liuyan.gateway.po.AuthorityRelation;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.security.jwt.Jwt;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
+import org.springframework.security.jwt.crypto.sign.SignatureVerifier;
+import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by liuyan on 2017/10/10.
  */
 @Slf4j
+@Component
 public class AuthorityFilter extends ZuulFilter {
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Override
     public String filterType() {
@@ -21,12 +40,12 @@ public class AuthorityFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 0;
+        return 1;
     }
 
     @Override
     public boolean shouldFilter() {
-        return false;
+        return true;
     }
 
     @Override
@@ -37,18 +56,59 @@ public class AuthorityFilter extends ZuulFilter {
 
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String value = request.getHeader("Authorization");
-        String method = request.getMethod().toUpperCase();
-        String uri = request.getRequestURI();
-        Optional<AuthorityRelation> authorityRelation = authorityRelations.stream().filter(s -> s.getMethod().equals(method)).filter(s -> s.getAuthorization().equals(value)).filter(s -> s.getUri().equals(uri)).findAny();
-        if (!authorityRelation.isPresent()) {
+        String jwt = request.getHeader("Authorization");
+        jwt = jwt.replace("bearer", "").replace(" ", "");
+        boolean b = dofilter(request, authorityRelations, jwt);
+
+        if (!b) {
             log.warn("access token is matching !!! ");
             ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(401);
+            ctx.setResponseStatusCode(403);
             return null;
         }
 
         return null;
+    }
+
+    private boolean dofilter(HttpServletRequest request, List<AuthorityRelation> authorityRelations, String jwt) {
+//        return authorityRelations
+//                .stream()
+//                .anyMatch(s -> request.getRequestURI().equals(s.getUri())
+//                        && request.getMethod().equals(s.getMethod())
+//                        && haveAuthority(jwt, s.getAuthorization()));
+
+        for (AuthorityRelation s : authorityRelations) {
+            String uri = request.getRequestURI();
+            String method = request.getMethod();
+            if (uri.equals(s.getUri())
+                    && method.equals(s.getMethod())
+                    && haveAuthority(jwt, s.getAuthorization())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean haveAuthority(String jwt, String authorization) {
+        List<String> authorizations = getAuthorization(jwt);
+        return authorizations.contains(authorization);
+    }
+
+    private List<String> getAuthorization(String jwt) {
+
+        Jwt jwt1 = JwtHelper.decode(jwt);
+        Resource resource = new ClassPathResource("public.cert");
+        String publicKey;
+        try {
+            publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SignatureVerifier signatureVerifier = new RsaVerifier(publicKey);
+        jwt1.verifySignature(signatureVerifier);
+        JSONObject o = JSONObject.parseObject(jwt1.getClaims());
+        JSONArray objects = (JSONArray) o.get("authorities");
+        return objects.toJavaList(String.class);
     }
 
     private List<AuthorityRelation> getAuthorityRelationList() {
@@ -58,13 +118,13 @@ public class AuthorityFilter extends ZuulFilter {
         AuthorityRelation authorityRelation = new AuthorityRelation();
         authorityRelation.setAuthorization("READ");
         authorityRelation.setMethod("GET");
-        authorityRelation.setUri("/test/get");
+        authorityRelation.setUri("/resources/test/get");
         authorityRelations.add(authorityRelation);
 
         AuthorityRelation authorityRelation1 = new AuthorityRelation();
         authorityRelation1.setAuthorization("WRITE");
         authorityRelation1.setMethod("POST");
-        authorityRelation1.setUri("/test/post");
+        authorityRelation1.setUri("/resources/test/post");
         authorityRelations.add(authorityRelation1);
 
         return authorityRelations;
