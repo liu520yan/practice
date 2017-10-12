@@ -61,9 +61,9 @@ public class AuthorityFilter extends ZuulFilter {
         boolean b = dofilter(request, authorityRelations, jwt);
 
         if (!b) {
-            log.warn("access token is matching !!! ");
             ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(403);
+            ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("hello");
             return null;
         }
 
@@ -76,6 +76,23 @@ public class AuthorityFilter extends ZuulFilter {
 //                .anyMatch(s -> request.getRequestURI().equals(s.getUri())
 //                        && request.getMethod().equals(s.getMethod())
 //                        && haveAuthority(jwt, s.getAuthorization()));
+
+
+        Jwt jwt1 = JwtHelper.decode(jwt);
+        Resource resource = new ClassPathResource("public.cert");
+        String publicKey;
+        try {
+            publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SignatureVerifier signatureVerifier = new RsaVerifier(publicKey);
+        try {
+            jwt1.verifySignature(signatureVerifier);
+        } catch (Exception e) {
+            log.warn("验签不通过" + jwt);
+            return false;
+        }
 
         for (AuthorityRelation s : authorityRelations) {
             String uri = request.getRequestURI();
@@ -95,17 +112,7 @@ public class AuthorityFilter extends ZuulFilter {
     }
 
     private List<String> getAuthorization(String jwt) {
-
         Jwt jwt1 = JwtHelper.decode(jwt);
-        Resource resource = new ClassPathResource("public.cert");
-        String publicKey;
-        try {
-            publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        SignatureVerifier signatureVerifier = new RsaVerifier(publicKey);
-        jwt1.verifySignature(signatureVerifier);
         JSONObject o = JSONObject.parseObject(jwt1.getClaims());
         JSONArray objects = (JSONArray) o.get("authorities");
         return objects.toJavaList(String.class);
