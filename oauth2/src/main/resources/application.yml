@@ -1,5 +1,12 @@
 server:
   port: 9999
-debug: true
+debug: false
 #jwt 过期时间 单位： 秒
 accessTokenValiditySeconds: 6000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
+spring:
+  application:
+    name: oauth2

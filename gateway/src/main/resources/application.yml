@@ -9,3 +9,10 @@ zuul:
       #忽略的敏感信息
       sensitive-headers:
       custom-sensitive-headers: true
+spring:
+  application:
+    name: gateway
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
