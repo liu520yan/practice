@@ -6,6 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
+import org.springframework.security.jwt.crypto.sign.Signer;
+import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
+
+import static org.springframework.security.jwt.codec.Codecs.b64UrlEncode;
+import static org.springframework.security.jwt.codec.Codecs.concat;
 
 /**
  * Created by liuyan on 2017/10/9.
@@ -39,5 +45,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin")
                 .password("admin")
                 .authorities("READ", "WRITE");
+    }
+
+    public static void main(String[] args) {
+
+//        String verifierKey = new RandomValueStringGenerator().generate();
+//
+//        Signer signer = new MacSigner(verifierKey);
+//
+//        byte[] crypto = signer
+//                .sign(concat(b64UrlEncode(header.bytes()), PERIOD, b64UrlEncode(claims)));
     }
 }
