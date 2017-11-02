@@ -1,6 +1,6 @@
 FROM intelligentpathways/java8
 VOLUME /tmp
-ADD gateway-1.0-SNAPSHOT.jar app.jar
+ADD gateway-1.0.1-SNAPSHOT.jar app.jar
 RUN bash -c 'touch /app.jar'
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo "Asia/Shanghai" > /etc/timezone
