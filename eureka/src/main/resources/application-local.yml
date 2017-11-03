@@ -9,6 +9,7 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+
     #生产环境不建议开启
 #  server:
 #    enable-self-preservation: false #关闭自我保护

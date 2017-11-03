@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    config:
+      uri: http://127.0.0.1:1201/
+      profile: default
+      label: master
+server:
+  port: 2001

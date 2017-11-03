@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: resources
+  cloud:
+    config:
+      uri: http://192.168.0.1:1201/
+      profile: default
+      label: master
+server:
+  port: 2001
