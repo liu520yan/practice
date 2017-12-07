@@ -1,8 +1,5 @@
-FROM intelligentpathways/java8
+FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ADD eureka-1.0.1-SNAPSHOT.jar app.jar
-RUN bash -c 'touch /app.jar'
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo "Asia/Shanghai" > /etc/timezone
+ADD eureka-1.0.1-SNAPSHOT.jar /app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

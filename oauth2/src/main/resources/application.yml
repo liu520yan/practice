@@ -6,7 +6,7 @@ accessTokenValiditySeconds: 6000
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:1001/eureka/
+      defaultZone: http://eureka.didispace.com/eureka/
 spring:
   application:
     name: oauth2

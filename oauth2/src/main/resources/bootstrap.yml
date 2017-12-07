@@ -3,7 +3,7 @@ spring:
     name: oauth2
   cloud:
     config:
-      uri: http://192.168.0.1:1201/
+      uri: http://192.168.1.2:1201/
       profile: default
       label: master
 server:
