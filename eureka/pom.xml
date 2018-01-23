@@ -38,7 +38,6 @@
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
                     <dockerCertPath>/data2</dockerCertPath>
-                    <dockerHost>http://39.108.223.226:2375</dockerHost>
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <resources>
                         <resource>
