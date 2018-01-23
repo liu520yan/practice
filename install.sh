@@ -7,6 +7,8 @@ EUREKA_PATH=$PARENT_DIR/eureka
 VERSION="1.0.1-SNAPSHOT"
 EUREKA_IMAGE="registry.xuey.top/eureka:$VERSION"
 
+DOCKER_HOST=unix:///var/run/docker.sock mvn clean install
+
 function installImage(){
 
     IMAGE_NAME=$1
