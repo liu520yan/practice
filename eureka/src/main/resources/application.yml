@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: eureka
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+    #生产环境不建议开启
+  server:
+    enable-self-preservation: false #关闭自我保护
+    eviction-interval-timer-in-ms: 1000 #eureka列表刷新时间
