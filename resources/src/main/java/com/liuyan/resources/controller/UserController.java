@@ -1,18 +1,17 @@
 package com.liuyan.resources.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.liuyan.resources.service.UserService;
 import com.liuyan.resources.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
@@ -33,9 +32,9 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PreAuthorize("hasAuthority('WRITE')")
+//    @PreAuthorize("hasAuthority('WRITE')")
     @RequestMapping(method = RequestMethod.POST, path = "/user")
-    public String writeUser() {
+    public String writeUser(@RequestBody UserVo vo) {
         return "write user " + UUID.randomUUID().toString();
     }
 

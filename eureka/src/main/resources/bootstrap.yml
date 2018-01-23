@@ -1,9 +1,9 @@
 spring:
   application:
-    name: oauth2
+    name: eureka
   cloud:
     config:
-      uri: http://192.168.1.2:1201/
+      uri: http://127.0.0.1:1201/
       profile: default
       label: master
 server:
