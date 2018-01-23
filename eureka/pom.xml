@@ -37,7 +37,6 @@
                 <version>0.4.12</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
-                    <dockerCertPath>/data2</dockerCertPath>
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <resources>
                         <resource>
