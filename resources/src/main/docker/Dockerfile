@@ -1,8 +1,5 @@
-FROM intelligentpathways/java8
+FROM java:8
 VOLUME /tmp
-ADD resources-1.0.1-SNAPSHOT.jar app.jar
-RUN bash -c 'touch /app.jar'
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo "Asia/Shanghai" > /etc/timezone
+ADD resources-1.0.1-SNAPSHOT.jar /app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.jar
