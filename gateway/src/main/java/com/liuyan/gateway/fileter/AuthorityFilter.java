@@ -27,7 +27,7 @@ import java.util.List;
  * Created by liuyan on 2017/10/10.
  */
 @Slf4j
-@Component
+//@Component
 public class AuthorityFilter extends ZuulFilter {
 
     @Autowired

@@ -11,10 +11,10 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration
 public class ZuulConfig {
-    @Bean
-    public AuthorityFilter getAuthorityFilter() {
-        return new AuthorityFilter();
-    }
+//    @Bean
+//    public AuthorityFilter getAuthorityFilter() {
+//        return new AuthorityFilter();
+//    }
 
     @Bean
     public ObjectMapper newObject() {

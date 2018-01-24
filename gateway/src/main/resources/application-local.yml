@@ -3,16 +3,22 @@ server:
 zuul:
   routes:
     resources:
-      path: /resources/**
-      url: http://localhost:9090/
-
+      path: localhost://**
+      url: /**
       #忽略的敏感信息
       sensitive-headers:
       custom-sensitive-headers: true
 spring:
   application:
     name: gateway
+  redis:
+    host: 39.108.223.226
+    port: 6379
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.102:1001/eureka/
+      defaultZone: http://eureka.xuey.top/eureka/
+
+login:
+  userName: liuyan
+  password: liuyan

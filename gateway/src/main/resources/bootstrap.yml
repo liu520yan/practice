@@ -6,5 +6,6 @@ spring:
       uri: http://127.0.0.1:1201/
       profile: default
       label: master
+      enabled: false
 server:
   port: 2001
