@@ -45,18 +45,16 @@ public class IpFilter extends ZuulFilter {
             log.info("进入登录页面，不校验ip。ip:{}", IpUtils.getIpAddr(request));
             return null;
         }
-        if (redisTemplate.opsForValue().get(request.getRemoteAddr()) != null) {
-            log.info("ip:{}已经登录过，无需再次登录！", request.getRemoteAddr());
+        if (redisTemplate.opsForValue().get(IpUtils.getIpAddr(request)) != null) {
+            log.info("ip:{}已经登录过，无需再次登录！", IpUtils.getIpAddr(request));
             return null;
         } else {
-            log.info("ip:{}没有登录，需要登录！", request.getRemoteAddr());
-        }
+            log.info("ip:{}没有登录，需要登录！", IpUtils.getIpAddr(request));
 
-        try {
-            ctx.getResponse().sendRedirect("/");
-        } catch (IOException e) {
-            e.printStackTrace();
+            ctx.setSendZuulResponse(false);
+            ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("sb");
+            return null;
         }
-        return false;
     }
 }
