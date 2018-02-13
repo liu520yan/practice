@@ -28,13 +28,13 @@ function installImage(){
         exit 1;
     fi
 
-    docker push $IMAGE_NAME
-    if [ ! $? = 0 ]; then
-        echo "Image push failed!"
-        exit 1;
-    else
-        echo BUILD SUCCESS: $IMAGE_NAME
-    fi
+#    docker push $IMAGE_NAME
+#    if [ ! $? = 0 ]; then
+#        echo "Image push failed!"
+#        exit 1;
+#    else
+#        echo BUILD SUCCESS: $IMAGE_NAME
+#    fi
 }
 
 function installEureka(){
