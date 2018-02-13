@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ADD oauth2-1.0.1-SNAPSHOT.jar /app.jar
 EXPOSE 8080
