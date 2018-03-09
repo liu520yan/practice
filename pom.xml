@@ -19,6 +19,7 @@
         <module>resources</module>
         <module>eureka</module>
         <module>config</module>
+        <module>admin</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -30,6 +31,7 @@
         <docker.image.prefix>registry.xuey.top</docker.image.prefix>
         <eureka.version>1.3.5.RELEASE</eureka.version>
         <spring.cloud.config.version>1.3.3.RELEASE</spring.cloud.config.version>
+        <spring.admin.verison>1.5.5</spring.admin.verison>
     </properties>
     <dependencyManagement>
         <dependencies>

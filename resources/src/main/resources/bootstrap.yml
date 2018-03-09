@@ -3,5 +3,11 @@ spring:
     name: resources
   profiles:
     active: local
+  boot:
+    admin:
+      url: : http://localhost:9101
 server:
   port: 2001
+management:
+  security:
+    enabled: false
