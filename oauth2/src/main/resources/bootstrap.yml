@@ -6,6 +6,7 @@ spring:
       uri: http://192.168.1.2:1201/
       profile: default
       label: master
+      enabled: false
   boot:
     admin:
       url: http://localhost:9101
